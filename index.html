@@ -1,0 +1,425 @@
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jardin Enchanté</title>
+<style>
+  :root{
+    --gold: #d4af6a;
+    --gold-light: #f0dcae;
+    --cream: #f7f2e7;
+    --dark: #1c1810;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{
+    scroll-behavior:smooth;
+    scroll-snap-type: y mandatory;
+  }
+  body{
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: var(--cream);
+    background: #000;
+  }
+
+  .bg-fixed{
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100vh;
+    background-image: url('https://z-cdn-media.chatglm.cn/files/bee353c0-42e1-4561-8bac-fbe3fb5e7195.png?auth_key=1883005873-0c66426abd70424f951e517644e40f45-0-0a4762435389fa4eeff7147c6a3670d0');
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+    filter: brightness(1.25) saturate(1.1);
+  }
+
+  .bg-overlay{
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100vh;
+    background: linear-gradient(90deg, rgba(5,5,3,0.62) 0%, rgba(5,5,3,0.25) 45%, rgba(5,5,3,0.1) 100%);
+    z-index: -1;
+  }
+
+  nav{
+    position: fixed;
+    top:0; left:0; right:0;
+    display:flex;
+    justify-content: flex-end;
+    align-items:center;
+    padding: 24px 6%;
+    z-index: 10;
+    background: transparent;
+    transition: background .3s ease;
+  }
+  nav .logo{
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap: 40px;
+  }
+  nav ul li a{
+    color: var(--cream);
+    text-decoration:none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+    transition: opacity .3s, color .3s;
+    position: relative;
+  }
+  nav ul li a:hover{ color: var(--gold-light); opacity:1; }
+
+  section{
+    height: 100vh;
+    min-height: 100vh;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:flex-start;
+    text-align:left;
+    padding: 120px 8% 120px 10%;
+    position: relative;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    overflow: clip;
+  }
+
+  #jardin, #contact{
+    justify-content:flex-start;
+    padding-top: 26vh;
+  }
+
+  .hero{
+    justify-content:flex-start;
+    align-items:flex-start;
+    padding-top: calc(26vh + 90px);
+  }
+  .hero h1{
+    font-size: clamp(2.2rem, 4.4vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+    white-space: nowrap;
+    animation: fadeUp 1.6s ease both;
+  }
+  .hero p{
+    margin-top: 20px;
+    font-size: 1.35rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.8;
+    animation: fadeUp 1.6s ease .3s both;
+  }
+  .hero .line{
+    width: 1px;
+    height: 70px;
+    background: var(--gold-light);
+    margin-top: 50px;
+    opacity: 0.6;
+    animation: fadeUp 1.6s ease .6s both;
+  }
+  .scroll-hint{
+    position:absolute;
+    bottom: 40px;
+    left: 10%;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    animation: bounce 2.2s infinite;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(40px);}
+    to{ opacity:1; transform: translateY(0);}
+  }
+  @keyframes bounce{
+    0%,100%{ transform: translate(0,0); }
+    50%{ transform: translate(0,10px); }
+  }
+
+  .reveal{
+    opacity:0;
+    transform: translateY(50px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .reveal.visible{
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  .content-block{
+    max-width: 720px;
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    font-weight: 600;
+    border-top: 1px solid var(--gold-light);
+    border-bottom: 1px solid var(--gold-light);
+    padding: 8px 0;
+    margin-bottom: 24px;
+    opacity: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
+  h2{
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    color: var(--cream);
+    text-shadow: 0 4px 24px rgba(0,0,0,0.7);
+    white-space: nowrap;
+  }
+  p.desc{
+    font-size: 1.1rem;
+    line-height: 1.9;
+    opacity: 1;
+    font-weight: 400;
+    color: #fff;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7);
+  }
+  .closing-line{
+    margin-top: auto;
+    font-size: 1.3rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    font-weight: 600;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7), 0 0 60px rgba(0,0,0,0.5);
+    opacity: 1;
+  }
+
+  .cards{
+    display:flex;
+    flex-direction: column;
+    gap: 22px;
+    margin-top: 36px;
+    max-width: 900px;
+    width:100%;
+  }
+  .card-row{
+    display:flex;
+    align-items:center;
+    gap: 68px;
+  }
+  .card{
+    background: rgba(20,18,10,0.4);
+    border: 1px solid rgba(212,175,106,0.35);
+    backdrop-filter: blur(6px);
+    padding: 28px 26px;
+    border-radius: 4px;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    gap: 8px;
+    flex-shrink: 0;
+    width: 450px;
+    height: 150px;
+    transition: transform .4s ease, border-color .4s ease, background .4s ease;
+  }
+  .card:hover{
+    transform: translateY(-6px);
+    border-color: var(--gold-light);
+    background: rgba(30,26,14,0.6);
+  }
+  .card .num{
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    color: var(--gold-light);
+    opacity:0.8;
+  }
+  .card h3{
+    font-size: 1.2rem;
+    font-weight:400;
+    letter-spacing: 1px;
+  }
+  .card-desc{
+    font-size: 1.05rem;
+    line-height: 1.7;
+    opacity: 1;
+    font-weight: 400;
+    color: #fff;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7);
+  }
+  .card.card--img{
+    padding: 0;
+    height: auto;
+    overflow: hidden;
+    cursor: pointer;
+    background: transparent;
+    border-color: rgba(212,175,106,0.35);
+  }
+  .card.card--img:hover{
+    transform: translateY(0);
+    background: transparent;
+    border-color: rgba(212,175,106,0.5);
+  }
+  .card.card--img img{
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 3px;
+    pointer-events: none;
+    transition: transform .6s ease;
+  }
+  .card.card--img:hover img{
+    transform: scale(1.04);
+  }
+
+  footer{
+    padding: 60px 8%;
+    text-align:center;
+    background: transparent;
+  }
+  footer .brand{
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+  footer .copy{
+    font-size: 0.75rem;
+    opacity: 0.5;
+    letter-spacing: 1px;
+  }
+
+  .btn{
+    display:inline-block;
+    margin-top: 36px;
+    padding: 16px 44px;
+    border: 1px solid var(--gold-light);
+    color: var(--gold-light);
+    text-decoration:none;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: background .35s ease, color .35s ease;
+  }
+  .btn:hover{
+    background: var(--gold-light);
+    color: var(--dark);
+  }
+
+  @media(max-width: 700px){
+    nav ul{ gap: 18px; }
+    nav ul li a{ font-size: 0.7rem; letter-spacing: 1px; }
+    section{ padding: 100px 6%; }
+    .card{ width: 260px; }
+    .card-row{ flex-direction: column; align-items: flex-start; gap: 28px; }
+    h2{ white-space: normal; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-fixed"></div>
+  <div class="bg-overlay"></div>
+
+  <nav>
+    <ul>
+      <li><a href="javascript:void(0)" data-target="accueil">Accueil</a></li>
+      <li><a href="javascript:void(0)" data-target="experience">Mes projets</a></li>
+      <li><a href="javascript:void(0)" data-target="jardin">À propos</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="accueil">
+    <h1>L'art du développement</h1>
+    <p>Explorer le web autrement.</p>
+  </section>
+
+  <section id="experience">
+    <div class="content-block reveal">
+      <span class="eyebrow">Mes projets</span>
+      <h2>Des créations pensées pour être explorées</h2>
+    </div>
+    <div class="cards">
+      <div class="card-row reveal">
+        <a href="https://sh4d0w-boxx.github.io/facemash/" target="_blank" rel="noopener" class="card card--img" style="text-decoration:none;">
+          <img src="https://z-cdn-media.chatglm.cn/files/e58c4c6b-9519-4861-a39f-2d3e0ea43fce.png?auth_key=1882980701-a1e8196cb8fe4f14b0c14943255f21c9-0-7244a297f079431c5de84bd3a38bd053" alt="Capture d'écran de Facemash">
+        </a>
+        <p class="card-desc">Reproduction fidèle du célèbre site Facemash, rendu populaire par The Social Network. Ce projet recrée l'expérience du film à travers une interface moderne et interactive, tout en mettant l'accent sur le souci du détail.</p>
+      </div>
+      <div class="card-row reveal">
+        <a href="https://y153z4hnvgq0-d.space-z.ai/" target="_blank" rel="noopener" class="card card--img" style="text-decoration:none;">
+          <img src="https://z-cdn-media.chatglm.cn/files/20939b0c-06fb-4b71-b8f8-501d9a489ea6.png?auth_key=1882981482-b8486f3f711c414e928da47e8b7d1c78-0-9557c185d865493a94cab0ce5797b370" alt="Capture d'écran de Project Veritas AI">
+        </a>
+        <p class="card-desc">Veritas est un site web exploitant l'intelligence artificielle pour générer des théories du complot fictives à partir d'un simple sujet. Un projet conçu pour explorer les capacités de l'IA à travers une expérience immersive et originale.</p>
+      </div>
+      <div class="card-row reveal">
+        <a href="https://u1ykv518e0m0-deploy.space-z.ai/" target="_blank" rel="noopener" class="card card--img" style="text-decoration:none;">
+          <img src="https://z-cdn-media.chatglm.cn/files/5566688b-ff94-4c3a-b966-4992c862c70f.png?auth_key=1883010342-8fca720ad0db46c1bc180e62233fc922-0-25637ae7a4a92cb0bb517329ef42ad67" alt="Capture d'écran de La Tour Sombre">
+        </a>
+        <p class="card-desc">Une archive interactive entièrement dédiée à l'univers de Stephen King. Ce projet rassemble ses romans, adaptations, personnages et lieux emblématiques au sein d'une plateforme immersive, pensée comme une véritable encyclopédie pour les passionnés.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience-2">
+    <div class="cards">
+      <div class="card-row reveal">
+        <div class="card card--img">
+          <img src="https://z-cdn-media.chatglm.cn/files/1c7303e6-765a-46e1-9f9f-ed8b960f41d7.png?auth_key=1883019640-784aa5ea7cd84697912d511aa71e8ca4-0-d3cf3ef4b697b585be656d8db783c759" alt="Projet en développement">
+        </div>
+        <p class="card-desc">Projet actuellement en développement 🚧</p>
+      </div>
+      <div class="card-row reveal">
+        <div class="card card--img">
+          <img src="https://z-cdn-media.chatglm.cn/files/1c7303e6-765a-46e1-9f9f-ed8b960f41d7.png?auth_key=1883019640-784aa5ea7cd84697912d511aa71e8ca4-0-d3cf3ef4b697b585be656d8db783c759" alt="Projet en développement">
+        </div>
+        <p class="card-desc">Projet actuellement en développement 🚧</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="jardin">
+    <div class="content-block reveal">
+      <span class="eyebrow">À propos</span>
+      <h2>Des idées qui prennent vie</h2>
+      <p class="desc">Passionné par la création d'expériences web, j'aime imaginer et concevoir des projets qui sortent de l'ordinaire. Du cinéma à l'intelligence artificielle en passant par les univers immersifs, chaque réalisation est une nouvelle occasion d'explorer une idée et de lui donner vie.</p>
+    </div>
+    <p class="closing-line reveal">L'aventure ne fait que commencer.</p>
+  </section>
+
+  <footer></footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('[data-target]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(link.dataset.target);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
