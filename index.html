@@ -262,6 +262,7 @@
     cursor: pointer;
     background: transparent;
     border-color: rgba(212,175,106,0.35);
+    position: relative;
   }
   .card.card--img:hover{
     transform: translateY(0);
@@ -278,6 +279,18 @@
   }
   .card.card--img:hover img{
     transform: scale(1.04);
+  }
+
+  .hint-text{
+    font-size: 1rem;
+    letter-spacing: 1px;
+    font-style: normal;
+    font-weight: 400;
+    color: var(--gold-light);
+    opacity: 1;
+    margin-top: -8px;
+    margin-bottom: 28px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.7);
   }
 
   footer{
@@ -347,6 +360,7 @@
     <div class="content-block reveal">
       <span class="eyebrow">Mes projets</span>
       <h2>Des créations pensées pour être explorées</h2>
+      <p class="hint-text">Cliquez sur une image pour découvrir le site</p>
     </div>
     <div class="cards">
       <div class="card-row reveal">
